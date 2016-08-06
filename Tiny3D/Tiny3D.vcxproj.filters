@@ -45,14 +45,14 @@
     <ClCompile Include="BoxShader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="LoadBitmap.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
     <ClCompile Include="Math\Texture2D.cpp">
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="GeometryGenerator.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\LoadBitmap.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -92,14 +92,14 @@
     <ClInclude Include="ZCMath.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="LoadBitmap.h">
-      <Filter>Math</Filter>
-    </ClInclude>
     <ClInclude Include="Math\Texture2D.h">
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="GeometryGenerator.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\LoadBitmap.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

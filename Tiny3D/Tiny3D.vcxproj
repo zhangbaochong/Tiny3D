@@ -150,9 +150,9 @@
     <ClCompile Include="BoxDemo.cpp" />
     <ClCompile Include="BoxShader.cpp" />
     <ClCompile Include="GeometryGenerator.cpp" />
-    <ClCompile Include="LoadBitmap.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtil.cpp" />
+    <ClCompile Include="Math\LoadBitmap.cpp" />
     <ClCompile Include="Math\Texture2D.cpp" />
     <ClCompile Include="Math\ZCMatrix.cpp" />
     <ClCompile Include="Math\ZCVector.cpp" />
@@ -165,7 +165,7 @@
     <ClInclude Include="BoxShader.h" />
     <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="LightHelper.h" />
-    <ClInclude Include="LoadBitmap.h" />
+    <ClInclude Include="Math\LoadBitmap.h" />
     <ClInclude Include="Math\MathUtil.h" />
     <ClInclude Include="Math\Texture2D.h" />
     <ClInclude Include="Math\ZCMatrix.h" />
