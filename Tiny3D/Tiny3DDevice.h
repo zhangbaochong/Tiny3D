@@ -2,7 +2,6 @@
 #include <windows.h>
 #include "ZCVector.h"
 #include "Vertex.h"
-#include <vector>
 
 class Tiny3DDevice
 {

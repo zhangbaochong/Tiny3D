@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 #include "BoxDemo.h"
-#include "Tiny3DDevice.h"
+#include "ZCMath.h"
 #pragma comment(lib, "winmm.lib")
 using namespace std; 
 
@@ -54,7 +54,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	}
 
 	ShowWindow(g_hWnd, nShowCmd);
-
+	
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));
 	while (msg.message != WM_QUIT)

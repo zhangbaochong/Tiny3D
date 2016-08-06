@@ -149,8 +149,11 @@
   <ItemGroup>
     <ClCompile Include="BoxDemo.cpp" />
     <ClCompile Include="BoxShader.cpp" />
+    <ClCompile Include="GeometryGenerator.cpp" />
+    <ClCompile Include="LoadBitmap.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtil.cpp" />
+    <ClCompile Include="Math\Texture2D.cpp" />
     <ClCompile Include="Math\ZCMatrix.cpp" />
     <ClCompile Include="Math\ZCVector.cpp" />
     <ClCompile Include="ShaderBase.cpp" />
@@ -160,14 +163,19 @@
   <ItemGroup>
     <ClInclude Include="BoxDemo.h" />
     <ClInclude Include="BoxShader.h" />
+    <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="LightHelper.h" />
+    <ClInclude Include="LoadBitmap.h" />
     <ClInclude Include="Math\MathUtil.h" />
+    <ClInclude Include="Math\Texture2D.h" />
     <ClInclude Include="Math\ZCMatrix.h" />
     <ClInclude Include="Math\ZCVector.h" />
     <ClInclude Include="ShaderBase.h" />
+    <ClInclude Include="Tiny3D.h" />
     <ClInclude Include="Tiny3DDevice.h" />
     <ClInclude Include="Tiny3DDeviceContext.h" />
     <ClInclude Include="Vertex.h" />
+    <ClInclude Include="ZCMath.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

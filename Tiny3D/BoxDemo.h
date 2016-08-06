@@ -1,7 +1,8 @@
 #pragma once
-#include "Tiny3DDevice.h"
-#include "Tiny3DDeviceContext.h"
+#include "Tiny3D.h"
 #include "BoxShader.h"
+#include "ZCMath.h"
+#include "GeometryGenerator.h"
 
 class BoxDemo
 {
@@ -33,6 +34,12 @@ private:
 	//顶点缓冲和索引缓冲
 	std::vector<VertexIn>		m_vertices;
 	std::vector<UINT>			m_indices;
+
+	GeometryGenerator::MeshData	m_box;
+
+	//纹理
+	Texture2D					m_tex;
+
 	//控制摄像机位置角度等
 	float						m_theta;
 	float						m_phi;

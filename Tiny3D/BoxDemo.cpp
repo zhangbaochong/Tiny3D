@@ -1,10 +1,8 @@
 #include "BoxDemo.h"
 #include <vector>
-#include "Vertex.h"
 #include "BoxShader.h"
-#include "MathUtil.h"
 
-//m_theta(1.5f*MathUtil::PI),m_phi(0.25*MathUtil::PI),
+
 BoxDemo::BoxDemo():m_theta(0.25f * MathUtil::PI),m_phi(0.25*MathUtil::PI),m_radius(3.0f)
 {	
 	m_lastMousePos.x = 0;
@@ -30,51 +28,37 @@ bool BoxDemo::Init(HINSTANCE hInstance,HWND hWnd)
 	m_pImmediateContext->Init(m_pDevice);
 	m_pShader = new BoxShader();
 
-	//创建顶点缓冲
-	m_vertices = std::vector<VertexIn>{
-	VertexIn(ZCVector(-0.5f, -0.5f, -0.5f, 1.f), ZCFLOAT3(1.f, 1.f, 1.f),ZCFLOAT2(0,0),ZCVector(2,1,3)),//white
-	VertexIn(ZCVector(-0.5f, +0.5f, -0.5f, 1.f), ZCFLOAT3(0.f, 0.f, 0.f),ZCFLOAT2(0,0),ZCVector(2,1,3)),//black
-	VertexIn(ZCVector(+0.5f, +0.5f, -0.5f, 1.f), ZCFLOAT3(1.f, 0.f, 0.f),ZCFLOAT2(0,0),ZCVector(2,1,3)),//red
-	VertexIn(ZCVector(+0.5f, -0.5f, -0.5f, 1.f), ZCFLOAT3(0.f, 1.f, 0.f),ZCFLOAT2(0,0),ZCVector(2,1,3)),//green
-	VertexIn(ZCVector(-0.5f, -0.5f, +0.5f, 1.f), ZCFLOAT3(0.f, 0.f, 1.f),ZCFLOAT2(0,0),ZCVector(2,1,3)),//blue
-	VertexIn(ZCVector(-0.5f, +0.5f, +0.5f, 1.f), ZCFLOAT3(1.f, 1.f, 0.f),ZCFLOAT2(0,0),ZCVector(2,1,3)),//yellow
-	VertexIn(ZCVector(+0.5f, +0.5f, +0.5f, 1.f), ZCFLOAT3(0.f, 1.f, 1.f),ZCFLOAT2(0,0),ZCVector(2,1,3)),//cyan
-	VertexIn(ZCVector(+0.5f, -0.5f, +0.5f, 1.f), ZCFLOAT3(1.f, 0.f, 1.f),ZCFLOAT2(0,0),ZCVector(2,1,3))//blue
+	//创建顶点缓存	
+	GeometryGenerator::GetInstance()->CreateBox(1.f, 1.f, 1.f, m_box);
+	m_vertices.resize(m_box.vertices.size());
+	for (UINT i = 0; i < m_box.vertices.size(); ++i)
+	{
+		m_vertices[i].pos = m_box.vertices[i].pos;
+		m_vertices[i].tex = m_box.vertices[i].tex;
+	}
 
-	};
 	m_pImmediateContext->SetVertexBuffer(m_vertices);	
 
-	//索引缓冲
-	m_indices = std::vector<UINT>{
-		// front face
-		0, 1, 2,
-		0, 2, 3,
+	//创建索引缓存
+	//create index buffer
+	m_indices.resize(m_box.indices.size());
 
-		// back face
-		4, 6, 5,
-		4, 7, 6,
+	for (UINT i = 0; i < m_box.indices.size(); ++i)
+	{
+		m_indices[i] = m_box.indices[i];
+	}
 
-		// left face
-		4, 5, 1,
-		4, 1, 0,
-
-		// right face
-		3, 2, 6,
-		3, 6, 7,
-
-		// top face
-		1, 5, 6,
-		1, 6, 2,
-
-		// bottom face
-		4, 0, 3,
-		4, 3, 7
-		
-	};
 	m_pImmediateContext->SetIndexBuffer(m_indices);
 
 	//设置着色器
 	m_pImmediateContext->SetShader(m_pShader);
+
+	//加载纹理
+	m_tex = MathUtil::LoadBitmapToColorArray(L"Texture/Wood.bmp");
+
+	//设置着色器纹理
+	//由于纹理加载一次不在改变，故不用再Update中设置
+	m_pShader->SetTexture(m_tex);
 
 	return true;
 }
