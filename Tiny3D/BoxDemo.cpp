@@ -12,6 +12,7 @@ BoxDemo::BoxDemo():m_theta(0.25f * MathUtil::PI),m_phi(0.25*MathUtil::PI),m_radi
 
 BoxDemo::~BoxDemo()
 {
+	Clear();
 }
 
 bool BoxDemo::Init(HINSTANCE hInstance,HWND hWnd)
@@ -35,6 +36,8 @@ bool BoxDemo::Init(HINSTANCE hInstance,HWND hWnd)
 	{
 		m_vertices[i].pos = m_box.vertices[i].pos;
 		m_vertices[i].tex = m_box.vertices[i].tex;
+		m_vertices[i].normal = m_box.vertices[i].normal;
+		m_vertices[i].color = m_box.vertices[i].color;
 	}
 
 	m_pImmediateContext->SetVertexBuffer(m_vertices);	
@@ -100,8 +103,12 @@ void BoxDemo::Render()
 
 void BoxDemo::Clear()
 {
-	delete m_pDevice;
-	delete m_pImmediateContext;
+	if(m_pDevice)
+		delete m_pDevice;
+	if(m_pImmediateContext)
+		delete m_pImmediateContext;
+	if (m_pShader)
+		delete m_pShader;
 }
 
 void BoxDemo::OnMouseDown(WPARAM btnState, int x, int y)

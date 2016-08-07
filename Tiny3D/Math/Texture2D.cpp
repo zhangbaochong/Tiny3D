@@ -23,7 +23,7 @@ Texture2D::~Texture2D()
 	}
 }
 
-ZCFLOAT3 Texture2D::Sample(ZCFLOAT2 tex)
+ZCFLOAT3 Texture2D::Sample(const ZCFLOAT2& tex)
 {
 	UINT u = tex.u * (m_width-1);
 	UINT v = tex.v * (m_height-1);

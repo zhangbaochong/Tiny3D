@@ -4,7 +4,7 @@
 const float MathUtil::PI = 3.1415926f;
 
 //线性插值 t位于[0,1]
-float MathUtil::Lerp(float x1, float x2, float t)
+inline float MathUtil::Lerp(float x1, float x2, float t)
 {
 	return x1 + (x2 - x1)*t;
 }
@@ -261,12 +261,9 @@ ZCMatrix MathUtil::ZCMatrixScreenTransform(int clientWidth, int clientHeight)
 	);
 }
 
-//颜色ZCVector(r,b,g,a)转化为UINT
+//颜色ZCFloat3(r,b,g,a)转化为UINT
 UINT MathUtil::ColorToUINT(const ZCFLOAT3& color)
 {
-// 	float r = Clamp(color.x, 0.f, 1.f);
-// 	float g = Clamp(color.y, 0.f, 1.f);
-// 	float b = Clamp(color.z, 0.f, 1.f);
 	BYTE red = 255 * color.x;
 	BYTE green = 255 * color.y;
 	BYTE blue = 255 * color.z;

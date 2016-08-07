@@ -17,12 +17,7 @@ public:
 
 	VertexIn() = default;
 	VertexIn(ZCVector pos, ZCFLOAT3 color, ZCFLOAT2 tex, ZCVector normal)
-	{
-		this->pos = pos;
-		this->color = color;
-		this->tex = tex;
-		this->normal = normal;
-	}
+		:pos(pos), color(color), tex(tex), normal(normal) {}
 
 	VertexIn(const VertexIn& rhs):pos(rhs.pos),color(rhs.color),tex(rhs.tex),normal(rhs.normal){}
 };
@@ -45,16 +40,8 @@ public:
 	float oneDivZ;
 
 	VertexOut() = default;
-	VertexOut(ZCVector posT,ZCVector posH,ZCFLOAT2 tex, ZCVector normal,ZCFLOAT3 color,float oneDivZ)
-	{
-		this->posTrans = posT;
-		this->posH = posH;
-		this->tex = tex;
-		this->normal = normal;
-		this->color = color;
-		this->oneDivZ = oneDivZ;
-	}
-	
+	VertexOut(ZCVector posT, ZCVector posH, ZCFLOAT2 tex, ZCVector normal, ZCFLOAT3 color, float oneDivZ)
+		:posTrans(posT), posH(posH), tex(tex), normal(normal), color(color), oneDivZ(oneDivZ) {}
 
 	VertexOut(const VertexOut& rhs) :posTrans(rhs.posTrans), posH(rhs.posH), tex(rhs.tex), normal(rhs.normal),
 	color(rhs.color),oneDivZ(rhs.oneDivZ){}

@@ -21,7 +21,7 @@ void BoxShader::SetTexture(const Texture2D& tex)
 	this->m_tex = tex;
 }
 
-VertexOut BoxShader::VS(VertexIn vin)
+VertexOut BoxShader::VS(const VertexIn& vin)
 {
 	VertexOut out;
 	out.posH = vin.pos * m_worldViewProj;
@@ -31,8 +31,8 @@ VertexOut BoxShader::VS(VertexIn vin)
 	return out;
 }
 
-ZCFLOAT3 BoxShader::PS(VertexOut pin)
+ZCFLOAT3 BoxShader::PS(const VertexOut& pin)
 {
-	//return pin.color;
-	return m_tex.Sample(pin.tex);
+	return pin.color;
+	//return m_tex.Sample(pin.tex);
 }

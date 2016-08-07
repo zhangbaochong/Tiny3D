@@ -72,7 +72,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
  			UpdateWindow(g_hWnd);
  		}
 	}
-	g_pBoxDemo->Clear();
 	return static_cast<int>(msg.wParam);
 }
 

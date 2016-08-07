@@ -48,7 +48,7 @@ public:
 	}
 
 public:
-	ZCFLOAT3 Sample(ZCFLOAT2 tex);
+	ZCFLOAT3 Sample(const ZCFLOAT2& tex);
 public:
 	UINT m_width;
 	UINT m_height;

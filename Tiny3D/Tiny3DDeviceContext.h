@@ -26,6 +26,8 @@ public:
 private:
 	void ToCVV(VertexOut& v);																	//投影后的坐标转化为cvv
 	bool Clip(const VertexOut& v);																//cvv裁剪
+	VertexOut TransformToProj(const VertexIn& v);													//转到齐次裁剪空间
+	void TransformToScreen(const ZCMatrix& m,VertexOut& v);										//转换到屏幕坐标
 	bool BackFaceCulling(const VertexIn& v1, const VertexIn& v2, const VertexIn& v3);			//背面消隐测试
 	void BresenhamDrawLine(int x1, int y1, int x2, int y2);										//画线
 	void ScanlineFill(const VertexOut& left, const VertexOut& right, int yIndex);				//扫描线

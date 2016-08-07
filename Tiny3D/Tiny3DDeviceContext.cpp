@@ -49,6 +49,10 @@ void Tiny3DDeviceContext::SetShader(ShaderBase* base)
 //绘制顶点缓冲中的三角形
 void Tiny3DDeviceContext::DrawIndexed(UINT indexCount, UINT startIndexLocation, UINT startVertexLocation)
 {
+	//得到屏幕变换矩阵
+	ZCMatrix screenTransformMat = MathUtil::ZCMatrixScreenTransform(m_pDevice->GetClientWidth(),
+		m_pDevice->getClientHeight());
+
  	for (int i = startIndexLocation; i < indexCount / 3; ++i)
  	{
 		VertexIn p1 = m_vertices[startVertexLocation + m_indices[3 * i]];
@@ -60,13 +64,10 @@ void Tiny3DDeviceContext::DrawIndexed(UINT indexCount, UINT startIndexLocation, 
 			continue;
 		}
 
-		VertexOut v1 = m_pShader->VS(p1);
-		VertexOut v2 = m_pShader->VS(p2);
-		VertexOut v3 = m_pShader->VS(p3);
-
-		v1.oneDivZ = 1 / v1.posH.w;
-		v2.oneDivZ = 1 / v2.posH.w;
-		v3.oneDivZ = 1 / v3.posH.w;
+		//转换到齐次裁剪空间，即投影后的坐标
+		VertexOut v1 = TransformToProj(p1);
+		VertexOut v2 = TransformToProj(p2);
+		VertexOut v3 = TransformToProj(p3);
 
 
 		//判断是否通过cvv裁剪
@@ -81,11 +82,9 @@ void Tiny3DDeviceContext::DrawIndexed(UINT indexCount, UINT startIndexLocation, 
 		ToCVV(v3);
 
 		//将投影得到的坐标转化为屏幕坐标
-		ZCMatrix screenTransformMat = MathUtil::ZCMatrixScreenTransform(m_pDevice->GetClientWidth(),
-			m_pDevice->getClientHeight());
-		v1.posH = v1.posH * screenTransformMat;
-		v2.posH = v2.posH * screenTransformMat;
-		v3.posH = v3.posH * screenTransformMat;
+		TransformToScreen(screenTransformMat, v1);
+		TransformToScreen(screenTransformMat, v2);
+		TransformToScreen(screenTransformMat, v3);
  		
 		DrawTriangle(v1, v2, v3);
  	}
@@ -111,6 +110,34 @@ bool Tiny3DDeviceContext::Clip(const VertexOut& v)
 		return true;
 	}
 	return false;
+}
+
+//转到齐次裁剪空间
+VertexOut Tiny3DDeviceContext::TransformToProj(const VertexIn& v)
+{
+	VertexOut out = m_pShader->VS(v);
+	//设置oneDivZ
+	out.oneDivZ = 1 / out.posH.w;
+	//由于1/z和x,y成线性关系
+	//这里将需要插值的信息都乘以1/z 得到 s/z和t/z等，方便光栅化阶段进行插值
+	out.color.x *= out.oneDivZ;
+	out.color.y *= out.oneDivZ;
+	out.color.z *= out.oneDivZ;
+
+	out.normal.x *= out.oneDivZ;
+	out.normal.y *= out.oneDivZ;
+	out.normal.z *= out.oneDivZ;
+
+	out.tex.u *= out.oneDivZ;
+	out.tex.v *= out.oneDivZ;
+
+	return out;
+}
+
+//转换到屏幕坐标
+void Tiny3DDeviceContext::TransformToScreen(const ZCMatrix& m, VertexOut& v)
+{
+	v.posH = v.posH * m;
 }
 
 //背面消隐
@@ -225,9 +252,10 @@ void Tiny3DDeviceContext::ScanlineFill(const VertexOut& left, const VertexOut& r
 {
 	float dx = right.posH.x - left.posH.x;
 
-	for (float x = left.posH.x; x <= right.posH.x; x += 0.5f)
+	for (float x = left.posH.x; x <= right.posH.x; x += 1.f)
 	{
 		int xIndex = static_cast<int>(x + .5f);
+		//int xIndex = x;
 		if(xIndex >= 0 && xIndex < m_pDevice->GetClientWidth())
 		{
 			//插值系数
@@ -243,9 +271,20 @@ void Tiny3DDeviceContext::ScanlineFill(const VertexOut& left, const VertexOut& r
 			if (oneDivZ >= m_pDevice->GetZ(xIndex,yIndex))
 			{
 				m_pDevice->SetZ(xIndex, yIndex, oneDivZ);
-				//插值顶点
+
+				float w = 1 / oneDivZ;
+				//插值顶点 原先需要插值的信息都乘以了oneDivZ
+				//现在得到插值后的信息需要除以oneDivZ得到真实值
 				VertexOut out = MathUtil::Lerp(left, right, lerpFactor);
 				out.posH.y = yIndex;
+				out.tex.u *= w;
+				out.tex.v *= w;
+				out.normal.x *= w;
+				out.normal.y *= w;
+				out.normal.z *= w;
+				out.color.x *= w;
+				out.color.y *= w;
+				out.color.z *= w;
 				//得到每一个像素的颜色
 				m_pDevice->DrawPixel(xIndex, yIndex, m_pShader->PS(out));
 			}			
@@ -257,9 +296,10 @@ void Tiny3DDeviceContext::ScanlineFill(const VertexOut& left, const VertexOut& r
 //直线x = (y-y1) * (x2-x1) / (y2-y1) + x1
 void Tiny3DDeviceContext::DrawTriangleTop(const VertexOut& v1, const VertexOut& v2, const VertexOut& v3)
 {
-	for (float y = v1.posH.y; y <= v3.posH.y; y += 0.5f)
+	for (float y = v1.posH.y; y <= v3.posH.y; y += 1.f)
 	{
 		int yIndex = static_cast<int>(y + 0.5f);
+		//int yIndex = y;
 		if (yIndex >= 0 && yIndex < m_pDevice->getClientHeight())
 		{
 			float xLeft = (y - v1.posH.y) * (v3.posH.x - v1.posH.x) / (v3.posH.y - v1.posH.y) + v1.posH.x;
@@ -293,9 +333,10 @@ void Tiny3DDeviceContext::DrawTriangleTop(const VertexOut& v1, const VertexOut& 
 //画平底三角形 v1为上顶点
 void Tiny3DDeviceContext::DrawTriangleBottom(const VertexOut& v1, const VertexOut& v2, const VertexOut& v3)
 {
-	for (float y = v1.posH.y; y <= v2.posH.y; y += 0.5f)
+	for (float y = v1.posH.y; y <= v2.posH.y; y += 1.f)
 	{
 		int yIndex = static_cast<int>(y + 0.5f);
+		//int yIndex = y;
 		if (yIndex >= 0 && yIndex < m_pDevice->getClientHeight())
 		{
 			float xLeft = (y - v1.posH.y) * (v2.posH.x - v1.posH.x) / (v2.posH.y - v1.posH.y) + v1.posH.x;

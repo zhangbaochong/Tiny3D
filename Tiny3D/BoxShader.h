@@ -19,7 +19,7 @@ public:
 	void SetWorldViewProj(const ZCMatrix& worldViewProj);
 	void SetTexture(const Texture2D& tex);
 public:
-	VertexOut VS(VertexIn vin);	//顶点着色器
-	ZCFLOAT3 PS(VertexOut pin);
+	VertexOut VS(const VertexIn& vin);	//顶点着色器
+	ZCFLOAT3 PS(const VertexOut& pin);
 };
 
