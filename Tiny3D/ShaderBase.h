@@ -12,6 +12,6 @@ public:
 
 public:
 	virtual VertexOut VS(const VertexIn& vin) = 0;	//顶点着色器
-	virtual ZCFLOAT3 PS(const VertexOut& pin) = 0;	//像素着色器
+	virtual ZCVector PS(VertexOut& pin) = 0;	//像素着色器
 };
 

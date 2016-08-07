@@ -9,14 +9,14 @@ public:
 	//顶点位置
 	ZCVector pos;
 	//顶点颜色
-	ZCFLOAT3 color;
+	ZCVector color;
 	//纹理坐标
 	ZCFLOAT2 tex;
 	//法线
 	ZCVector normal;
 
 	VertexIn() = default;
-	VertexIn(ZCVector pos, ZCFLOAT3 color, ZCFLOAT2 tex, ZCVector normal)
+	VertexIn(ZCVector pos, ZCVector color, ZCFLOAT2 tex, ZCVector normal)
 		:pos(pos), color(color), tex(tex), normal(normal) {}
 
 	VertexIn(const VertexIn& rhs):pos(rhs.pos),color(rhs.color),tex(rhs.tex),normal(rhs.normal){}
@@ -35,12 +35,12 @@ public:
 	//法线
 	ZCVector normal;
 	//颜色
-	ZCFLOAT3 color;
+	ZCVector color;
 	//1/z用于深度测试
 	float oneDivZ;
 
 	VertexOut() = default;
-	VertexOut(ZCVector posT, ZCVector posH, ZCFLOAT2 tex, ZCVector normal, ZCFLOAT3 color, float oneDivZ)
+	VertexOut(ZCVector posT, ZCVector posH, ZCFLOAT2 tex, ZCVector normal, ZCVector color, float oneDivZ)
 		:posTrans(posT), posH(posH), tex(tex), normal(normal), color(color), oneDivZ(oneDivZ) {}
 
 	VertexOut(const VertexOut& rhs) :posTrans(rhs.posTrans), posH(rhs.posH), tex(rhs.tex), normal(rhs.normal),

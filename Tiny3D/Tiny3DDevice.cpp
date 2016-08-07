@@ -26,7 +26,7 @@ Tiny3DDevice::~Tiny3DDevice()
 }
 
 //»­ÏñËØ
-void Tiny3DDevice::DrawPixel(int x, int y, ZCFLOAT3 color)
+void Tiny3DDevice::DrawPixel(int x, int y, ZCVector color)
 {
 	m_pFramebuffer[m_width*y + x] = MathUtil::ColorToUINT(color);
 }
@@ -47,7 +47,7 @@ void Tiny3DDevice::SetZ(int x, int y, float z)
 	}
 }
 
-void Tiny3DDevice::ClearBuffer(ZCFLOAT3 color)
+void Tiny3DDevice::ClearBuffer(ZCVector color)
 {
 	for (int x = 0; x < m_width; ++x)
 	{

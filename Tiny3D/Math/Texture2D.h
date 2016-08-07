@@ -13,10 +13,10 @@ public:
 	Texture2D(const Texture2D& rhs) :m_width(rhs.m_width), m_height(rhs.m_height)
 	{
 		//Éî¿½±´
-		m_pixelBuffer = new ZCFLOAT3*[m_width];
+		m_pixelBuffer = new ZCVector*[m_width];
 		for (int i = 0; i < m_width; ++i)
 		{
-			m_pixelBuffer[i] = new ZCFLOAT3[m_height];
+			m_pixelBuffer[i] = new ZCVector[m_height];
 		}
 		for (int i = 0; i < m_width; ++i)
 		{
@@ -32,10 +32,10 @@ public:
 			return *this;
 		m_width = rhs.m_width;
 		m_height = rhs.m_height;
-		m_pixelBuffer = new ZCFLOAT3*[m_width];
+		m_pixelBuffer = new ZCVector*[m_width];
 		for (int i = 0; i < m_width; ++i)
 		{
-			m_pixelBuffer[i] = new ZCFLOAT3[m_height];
+			m_pixelBuffer[i] = new ZCVector[m_height];
 		}
 		for (int i = 0; i < m_width; ++i)
 		{
@@ -48,10 +48,10 @@ public:
 	}
 
 public:
-	ZCFLOAT3 Sample(const ZCFLOAT2& tex);
+	ZCVector Sample(const ZCFLOAT2& tex);
 public:
 	UINT m_width;
 	UINT m_height;
-	ZCFLOAT3** m_pixelBuffer;
+	ZCVector** m_pixelBuffer;
 };
 

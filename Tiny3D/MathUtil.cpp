@@ -262,11 +262,19 @@ ZCMatrix MathUtil::ZCMatrixScreenTransform(int clientWidth, int clientHeight)
 }
 
 //颜色ZCFloat3(r,b,g,a)转化为UINT
-UINT MathUtil::ColorToUINT(const ZCFLOAT3& color)
+UINT MathUtil::ColorToUINT(const ZCVector& color)
 {
-	BYTE red = 255 * color.x;
-	BYTE green = 255 * color.y;
-	BYTE blue = 255 * color.z;
+	BYTE red = 255 * color.x * color.w;
+	BYTE green = 255 * color.y * color.w;
+	BYTE blue = 255 * color.z * color.w;
 	return (UINT)((BYTE)blue | (WORD)((BYTE)green << 8) | (DWORD)((BYTE)red << 16));
+}
+
+//求反射向量
+ZCVector MathUtil::Reflect(const ZCVector& I, const ZCVector& N)
+{
+	//公式 R = I - 2(I·N)N
+	float tmp = 2.f * I.Dot(N);
+	return I - (N * tmp);
 }
 

@@ -1,5 +1,5 @@
-#include "BoxDemo.h"
 #include <vector>
+#include "BoxDemo.h"
 #include "BoxShader.h"
 
 
@@ -7,6 +7,19 @@ BoxDemo::BoxDemo():m_theta(0.25f * MathUtil::PI),m_phi(0.25*MathUtil::PI),m_radi
 {	
 	m_lastMousePos.x = 0;
 	m_lastMousePos.y = 0;
+
+	m_world = MathUtil::ZCMatrixIdentity();
+
+	//平行光
+	m_dirLight.ambient = ZCVector(0.2f, 0.2f, 0.2f, 1.0f);
+	m_dirLight.diffuse = ZCVector(0.5f, 0.5f, 0.5f, 1.0f);
+	m_dirLight.specular = ZCVector(0.5f, 0.5f, 0.5f, 1.0f);
+	m_dirLight.direction = ZCVector(0.57735f, -0.57735f, 0.57735f);
+
+	//材质
+	m_material.ambient = ZCVector(0.7f, 0.85f, 0.7f, 1.0f);
+	m_material.diffuse = ZCVector(0.7f, 0.85f, 0.7f, 1.0f);
+	m_material.specular = ZCVector(0.8f, 0.8f, 0.8f, 16.0f);
 }
 
 
@@ -63,6 +76,10 @@ bool BoxDemo::Init(HINSTANCE hInstance,HWND hWnd)
 	//由于纹理加载一次不在改变，故不用再Update中设置
 	m_pShader->SetTexture(m_tex);
 
+	//设置着色器光源、材质
+	m_pShader->SetDirLight(m_dirLight);
+	m_pShader->SetMaterial(m_material);
+	
 	return true;
 }
 
@@ -83,20 +100,29 @@ void BoxDemo::Update(float dt)
 
 	ZCMatrix world = MathUtil::ZCMatrixIdentity();
 	m_worldViewProj = world*view*proj;
+	m_world = world;
+
+	//计算逆矩阵的转置
+	m_worldInvTranspose = MathUtil::ZCMatrixTranspose(MathUtil::ZCMatrixInverse(world));
 
 	//设置相机位置 以便背面消隐
 	m_pImmediateContext->SetCameraPos(pos);
+	
+	//设置着色器中eyePos
+	m_pShader->SetEyePos(pos);
 }
 
 void BoxDemo::Render()
 {
 	//清空后缓冲图片
-	m_pDevice->ClearBuffer(ZCFLOAT3(0.f, 0.f, 0.f));
+	m_pDevice->ClearBuffer(ZCVector(0.f, 0.f, 0.f,1.f));
 
 	//设置渲染状态
 	m_pImmediateContext->SetRenderMode(TINY3D_FILL_SOLIDE);
 	//设置着色器变量
 	m_pShader->SetWorldViewProj(m_worldViewProj);
+	m_pShader->SetWorld(m_world);
+	m_pShader->SetWorldInvTranspose(m_worldInvTranspose);
 
 	m_pImmediateContext->DrawIndexed(m_indices.size(), 0, 0);
 }

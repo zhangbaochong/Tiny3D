@@ -77,5 +77,8 @@ namespace MathUtil
 	ZCMatrix ZCMatrixScreenTransform(int clientWidth, int clientHeight);
 
 	//颜色ZCVector(r,b,g,a)转化为UINT
-	UINT ColorToUINT(const ZCFLOAT3& color);
+	UINT ColorToUINT(const ZCVector& color);
+
+	//求入射向量关于法线的反射向量
+	ZCVector Reflect(const ZCVector& vin, const ZCVector& normal);
 }

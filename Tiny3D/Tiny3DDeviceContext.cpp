@@ -85,7 +85,7 @@ void Tiny3DDeviceContext::DrawIndexed(UINT indexCount, UINT startIndexLocation, 
 		TransformToScreen(screenTransformMat, v1);
 		TransformToScreen(screenTransformMat, v2);
 		TransformToScreen(screenTransformMat, v3);
- 		
+		
 		DrawTriangle(v1, v2, v3);
  	}
 }
@@ -218,7 +218,7 @@ void Tiny3DDeviceContext::BresenhamDrawLine(int x1, int y1, int x2, int y2)
 		for (int i = 0; i <= dx; ++i)
 		{
 			if(x1 >= 0 && x1 < m_pDevice->GetClientWidth() && y1 >= 0 && y1 < m_pDevice->getClientHeight())
-				m_pDevice->DrawPixel(x1, y1, ZCFLOAT3(1.f, 1.f, 1.f));
+				m_pDevice->DrawPixel(x1, y1, ZCVector(1.f, 1.f, 1.f,1.f));
 			if (error >= 0)
 			{
 				error -= deltaX;
@@ -234,7 +234,7 @@ void Tiny3DDeviceContext::BresenhamDrawLine(int x1, int y1, int x2, int y2)
 		for (int i = 0; i <= dy; i++)
 		{
 			if (x1 >= 0 && x1 < m_pDevice->GetClientWidth() && y1 >= 0 && y1 < m_pDevice->getClientHeight())
-				m_pDevice->DrawPixel(x1, y1, ZCFLOAT3(1.f, 1.f, 1.f));
+				m_pDevice->DrawPixel(x1, y1, ZCVector(1.f, 1.f, 1.f,1.f));
 			if (error >= 0)
 			{
 				error -= deltaY;
@@ -254,8 +254,8 @@ void Tiny3DDeviceContext::ScanlineFill(const VertexOut& left, const VertexOut& r
 
 	for (float x = left.posH.x; x <= right.posH.x; x += 1.f)
 	{
-		int xIndex = static_cast<int>(x + .5f);
-		//int xIndex = x;
+		//int xIndex = static_cast<int>(x + .5f);
+		int xIndex = x;
 		if(xIndex >= 0 && xIndex < m_pDevice->GetClientWidth())
 		{
 			//²åÖµÏµÊý
@@ -298,8 +298,8 @@ void Tiny3DDeviceContext::DrawTriangleTop(const VertexOut& v1, const VertexOut& 
 {
 	for (float y = v1.posH.y; y <= v3.posH.y; y += 1.f)
 	{
-		int yIndex = static_cast<int>(y + 0.5f);
-		//int yIndex = y;
+		//int yIndex = static_cast<int>(y + 0.5f);
+		int yIndex = y;
 		if (yIndex >= 0 && yIndex < m_pDevice->getClientHeight())
 		{
 			float xLeft = (y - v1.posH.y) * (v3.posH.x - v1.posH.x) / (v3.posH.y - v1.posH.y) + v1.posH.x;
@@ -335,8 +335,8 @@ void Tiny3DDeviceContext::DrawTriangleBottom(const VertexOut& v1, const VertexOu
 {
 	for (float y = v1.posH.y; y <= v2.posH.y; y += 1.f)
 	{
-		int yIndex = static_cast<int>(y + 0.5f);
-		//int yIndex = y;
+		//int yIndex = static_cast<int>(y + 0.5f);
+		int yIndex = y;
 		if (yIndex >= 0 && yIndex < m_pDevice->getClientHeight())
 		{
 			float xLeft = (y - v1.posH.y) * (v2.posH.x - v1.posH.x) / (v2.posH.y - v1.posH.y) + v1.posH.x;

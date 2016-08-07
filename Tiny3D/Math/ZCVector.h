@@ -38,13 +38,20 @@ public:
 	bool operator==(const ZCVector& rhs) const;
 	//与变换矩阵相乘
 	ZCVector operator* (const ZCMatrix& rhs) const;
+	//与ZCVector分量相乘
+	ZCVector operator* (const ZCVector& rhs) const;
+	//与float相乘
+	ZCVector operator*(float factor) const;
 	//加
 	ZCVector operator+ (const ZCVector& rhs) const;
 	//减
 	ZCVector operator- (const ZCVector& rhs) const;
+	//负号
+	ZCVector operator-() const;
+	
 };
 
-//用作颜色表示
+
 class ZCFLOAT3
 {
 public:

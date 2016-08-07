@@ -9,12 +9,12 @@
 using namespace std; 
 
 
-HINSTANCE				g_hInstance;			//实例句柄
+HINSTANCE				g_hInstance;				//实例句柄
 static HWND				g_hWnd;					//窗口句柄
-string					g_title = "TinyD3D";	//窗口标题
+string					g_title = "TinyD3D";		//窗口标题
 int						g_width = 800;			//窗口大小
 int						g_height = 600;
-//Tiny3DDevice*			g_pDevice;
+
 shared_ptr<BoxDemo> g_pBoxDemo = make_shared<BoxDemo>();
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);

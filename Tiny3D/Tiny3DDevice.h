@@ -9,13 +9,13 @@ public:
 	Tiny3DDevice(int width, int height);
 	~Tiny3DDevice();
 public:
-	void DrawPixel(int x, int y, ZCFLOAT3 color);	
+	void DrawPixel(int x, int y, ZCVector color);	
 	float GetZ(int x, int y) const;
 	void SetZ(int x, int y, float z);
 	inline UINT*& GetFrameBuffer() { return m_pFramebuffer; }
 	inline int GetClientWidth() { return m_width; }
 	inline int getClientHeight() { return m_height; }
-	void ClearBuffer(ZCFLOAT3 color);
+	void ClearBuffer(ZCVector color);
 private:
 	int m_width;
 	int m_height;

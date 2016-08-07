@@ -38,10 +38,11 @@ Texture2D MathUtil::LoadBitmapToColorArray(wstring filePath)
 			{
 				bmp->GetPixel(x, y, &color);
 
-				texture.m_pixelBuffer[x][height - 1 - y] = ZCFLOAT3(
+				texture.m_pixelBuffer[x][height - 1 - y] = ZCVector(
 					color.GetRed() / 255.f,
 					color.GetGreen() / 255.f,
-					color.GetBlue() / 255.f
+					color.GetBlue() / 255.f,
+					1.f
 				);
 			}
 		delete bmp;

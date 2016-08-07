@@ -56,6 +56,27 @@ ZCVector ZCVector::operator* (const ZCMatrix& rhs) const
 					x*rhs._14 + y*rhs._24 + z*rhs._34 + w*rhs._44);
 }
 
+//∑÷¡øœ‡≥À
+ZCVector ZCVector::operator*(const ZCVector& rhs) const
+{
+	return ZCVector(
+		x * rhs.x,
+		y * rhs.y,
+		z * rhs.z,
+		w * rhs.w
+	);
+}
+
+ZCVector ZCVector::operator*(float factor) const
+{
+	return ZCVector(
+		x * factor,
+		y * factor,
+		z * factor,
+		w
+	);
+}
+
 //v1 = v2 + v3
 ZCVector ZCVector::operator+(const ZCVector& rhs) const
 {
@@ -66,4 +87,9 @@ ZCVector ZCVector::operator+(const ZCVector& rhs) const
 ZCVector ZCVector::operator-(const ZCVector& rhs) const
 {
 	return ZCVector(x - rhs.x, y - rhs.y, z - rhs.z, 0.0f);
+}
+
+ZCVector ZCVector::operator-() const
+{
+	return ZCVector(-x, -y - z, w);
 }
