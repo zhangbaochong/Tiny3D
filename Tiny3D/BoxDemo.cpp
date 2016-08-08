@@ -3,7 +3,7 @@
 #include "BoxShader.h"
 
 
-BoxDemo::BoxDemo():m_theta(0.25f * MathUtil::PI),m_phi(0.25*MathUtil::PI),m_radius(3.0f)
+BoxDemo::BoxDemo():m_theta(1.5f * MathUtil::PI),m_phi(0.4*MathUtil::PI),m_radius(5.0f)
 {	
 	m_lastMousePos.x = 0;
 	m_lastMousePos.y = 0;
@@ -14,7 +14,7 @@ BoxDemo::BoxDemo():m_theta(0.25f * MathUtil::PI),m_phi(0.25*MathUtil::PI),m_radi
 	m_dirLight.ambient = ZCVector(0.2f, 0.2f, 0.2f, 1.0f);
 	m_dirLight.diffuse = ZCVector(0.5f, 0.5f, 0.5f, 1.0f);
 	m_dirLight.specular = ZCVector(0.5f, 0.5f, 0.5f, 1.0f);
-	m_dirLight.direction = ZCVector(0.57735f, -0.57735f, 0.57735f);
+	m_dirLight.direction = ZCVector(0.57735f, 0.57735f, 0.57735f);
 
 	//²ÄÖÊ
 	m_material.ambient = ZCVector(0.7f, 0.85f, 0.7f, 1.0f);
@@ -43,7 +43,7 @@ bool BoxDemo::Init(HINSTANCE hInstance,HWND hWnd)
 	m_pShader = new BoxShader();
 
 	//´´½¨¶¥µã»º´æ	
-	GeometryGenerator::GetInstance()->CreateBox(1.f, 1.f, 1.f, m_box);
+	GeometryGenerator::GetInstance()->CreateBox(2.f, 2.f, 2.f, m_box);
 	m_vertices.resize(m_box.vertices.size());
 	for (UINT i = 0; i < m_box.vertices.size(); ++i)
 	{
@@ -96,7 +96,7 @@ void BoxDemo::Update(float dt)
 
 	ZCMatrix view = MathUtil::ZCMatrixLookAtLH(pos, target, up);
 	ZCMatrix proj = MathUtil::ZCMatrixPerspectiveFovLH(MathUtil::PI / 4, m_pDevice->GetClientWidth() /
-		static_cast<float>(m_pDevice->getClientHeight()), 0.1f, 10.f);
+		static_cast<float>(m_pDevice->getClientHeight()), 1.f, 100.f);
 
 	ZCMatrix world = MathUtil::ZCMatrixIdentity();
 	m_worldViewProj = world*view*proj;
@@ -115,7 +115,7 @@ void BoxDemo::Update(float dt)
 void BoxDemo::Render()
 {
 	//Çå¿Õºó»º³åÍ¼Æ¬
-	m_pDevice->ClearBuffer(ZCVector(0.f, 0.f, 0.f,1.f));
+	m_pDevice->ClearBuffer(ZCVector(0.75f, 0.75f, 0.75f,1.f));
 
 	//ÉèÖÃäÖÈ¾×´Ì¬
 	m_pImmediateContext->SetRenderMode(TINY3D_FILL_SOLIDE);

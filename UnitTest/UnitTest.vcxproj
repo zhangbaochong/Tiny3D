@@ -57,7 +57,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>../Tiny3D/Debug/ZCVector.obj;../Tiny3D/Debug/ZCMatrix.obj;../Tiny3D/Debug/MathUtil.obj;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../Tiny3D/Debug/ZCVector.obj;../Tiny3D/Debug/ZCMatrix.obj;../Tiny3D/Debug/Vertex.obj;../Tiny3D/Debug/MathUtil.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

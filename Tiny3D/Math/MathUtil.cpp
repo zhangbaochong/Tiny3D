@@ -62,6 +62,12 @@ float MathUtil::Clamp(float x, float min, float max)
 	return x;
 }
 
+//向量长度
+float MathUtil::Length(const ZCVector& v)
+{
+	return sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
+}
+
 //单位矩阵
 ZCMatrix MathUtil::ZCMatrixIdentity()
 {
@@ -243,10 +249,12 @@ ZCMatrix MathUtil::ZCMatrixPerspectiveFovLH(float fovAngleY, float aspectRatio, 
 {
 	ZCMatrix mat;
 	mat.SetZero();
-	mat._11 = 1 / (tan(fovAngleY*0.5f)*aspectRatio);
-	mat._22 = 1 / tan(fovAngleY*0.5f);
-	mat._33 = farZ / farZ - nearZ;
-	mat._34 = 1;
+	// tan(fovAngleY*0.5f)
+	float height = cos(fovAngleY*0.5f) / sin(fovAngleY*0.5f);
+	mat._11 = height / aspectRatio;
+	mat._22 = height;
+	mat._33 = farZ / (farZ - nearZ);
+	mat._34 = 1.f;
 	mat._43 = (nearZ * farZ) / (nearZ - farZ);
 	return mat;
 }
@@ -264,9 +272,9 @@ ZCMatrix MathUtil::ZCMatrixScreenTransform(int clientWidth, int clientHeight)
 //颜色ZCFloat3(r,b,g,a)转化为UINT
 UINT MathUtil::ColorToUINT(const ZCVector& color)
 {
-	BYTE red = 255 * color.x * color.w;
-	BYTE green = 255 * color.y * color.w;
-	BYTE blue = 255 * color.z * color.w;
+	BYTE red = 255 * color.x/*  color.w*/;
+	BYTE green = 255 * color.y/* color.w*/;
+	BYTE blue = 255 * color.z /* color.w*/;
 	return (UINT)((BYTE)blue | (WORD)((BYTE)green << 8) | (DWORD)((BYTE)red << 16));
 }
 

@@ -218,7 +218,7 @@ void Tiny3DDeviceContext::BresenhamDrawLine(int x1, int y1, int x2, int y2)
 		for (int i = 0; i <= dx; ++i)
 		{
 			if(x1 >= 0 && x1 < m_pDevice->GetClientWidth() && y1 >= 0 && y1 < m_pDevice->getClientHeight())
-				m_pDevice->DrawPixel(x1, y1, ZCVector(1.f, 1.f, 1.f,1.f));
+				m_pDevice->DrawPixel(x1, y1, ZCVector(0.f, 0.f, 0.f,1.f));
 			if (error >= 0)
 			{
 				error -= deltaX;
@@ -234,7 +234,7 @@ void Tiny3DDeviceContext::BresenhamDrawLine(int x1, int y1, int x2, int y2)
 		for (int i = 0; i <= dy; i++)
 		{
 			if (x1 >= 0 && x1 < m_pDevice->GetClientWidth() && y1 >= 0 && y1 < m_pDevice->getClientHeight())
-				m_pDevice->DrawPixel(x1, y1, ZCVector(1.f, 1.f, 1.f,1.f));
+				m_pDevice->DrawPixel(x1, y1, ZCVector(0.f, 0.f, 0.f,1.f));
 			if (error >= 0)
 			{
 				error -= deltaY;
@@ -254,8 +254,9 @@ void Tiny3DDeviceContext::ScanlineFill(const VertexOut& left, const VertexOut& r
 
 	for (float x = left.posH.x; x <= right.posH.x; x += 1.f)
 	{
-		//int xIndex = static_cast<int>(x + .5f);
-		int xIndex = x;
+		//四舍五入
+		int xIndex = static_cast<int>(x + .5f);
+		
 		if(xIndex >= 0 && xIndex < m_pDevice->GetClientWidth())
 		{
 			//插值系数
@@ -273,7 +274,7 @@ void Tiny3DDeviceContext::ScanlineFill(const VertexOut& left, const VertexOut& r
 				m_pDevice->SetZ(xIndex, yIndex, oneDivZ);
 
 				float w = 1 / oneDivZ;
-				//插值顶点 原先需要插值的信息都乘以了oneDivZ
+				//插值顶点 原先需要插值的信息均乘以oneDivZ
 				//现在得到插值后的信息需要除以oneDivZ得到真实值
 				VertexOut out = MathUtil::Lerp(left, right, lerpFactor);
 				out.posH.y = yIndex;
@@ -285,7 +286,7 @@ void Tiny3DDeviceContext::ScanlineFill(const VertexOut& left, const VertexOut& r
 				out.color.x *= w;
 				out.color.y *= w;
 				out.color.z *= w;
-				//得到每一个像素的颜色
+				//画像素点颜色
 				m_pDevice->DrawPixel(xIndex, yIndex, m_pShader->PS(out));
 			}			
 		}	
@@ -298,8 +299,9 @@ void Tiny3DDeviceContext::DrawTriangleTop(const VertexOut& v1, const VertexOut& 
 {
 	for (float y = v1.posH.y; y <= v3.posH.y; y += 1.f)
 	{
-		//int yIndex = static_cast<int>(y + 0.5f);
-		int yIndex = y;
+		//四舍五入
+		int yIndex = static_cast<int>(y + 0.5f);
+
 		if (yIndex >= 0 && yIndex < m_pDevice->getClientHeight())
 		{
 			float xLeft = (y - v1.posH.y) * (v3.posH.x - v1.posH.x) / (v3.posH.y - v1.posH.y) + v1.posH.x;
@@ -335,8 +337,9 @@ void Tiny3DDeviceContext::DrawTriangleBottom(const VertexOut& v1, const VertexOu
 {
 	for (float y = v1.posH.y; y <= v2.posH.y; y += 1.f)
 	{
-		//int yIndex = static_cast<int>(y + 0.5f);
-		int yIndex = y;
+		//四舍五入
+		int yIndex = static_cast<int>(y + 0.5f);
+
 		if (yIndex >= 0 && yIndex < m_pDevice->getClientHeight())
 		{
 			float xLeft = (y - v1.posH.y) * (v2.posH.x - v1.posH.x) / (v2.posH.y - v1.posH.y) + v1.posH.x;

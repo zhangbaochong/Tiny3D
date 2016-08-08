@@ -4,3 +4,4 @@ Debug/
 Tiny3D/Debug/
 *.sdf
 *.suo
+ipch/

@@ -15,7 +15,7 @@ namespace Lights {
 		ZCVector specular;	//高光
 		ZCVector direction;	//光照方向
 	};
-	/*
+	
 	//点光源
 	struct PointLight
 	{
@@ -25,13 +25,11 @@ namespace Lights {
 		ZCVector diffuse;
 		ZCVector specular;
 
-		// Packed into 4D vector: (Position, Range)
-		ZCFLOAT3 position;//光源位置
-		float range;      //光照范围
+		ZCVector position;//光源位置
 
-						  // Packed into 4D vector: (A0, A1, A2, Pad)
-		ZCFLOAT3 att;     //衰减系数
-		float pad; // Pad the last float so we can set an array of lights if we wanted.
+		ZCVector att;     //衰减系数
+
+		float range;      //光照范围
 	};
 	//聚光灯
 	struct SpotLight
@@ -42,20 +40,16 @@ namespace Lights {
 		ZCVector diffuse;
 		ZCVector specular;
 
-		// Packed into 4D vector: (Position, Range)
-		ZCFLOAT3 position;//光照位置
-		float range;      //光照范围
-
-						  // Packed into 4D vector: (Direction, Spot)
-		ZCFLOAT3 direction;//光照方向
-		float spot;        //光照强度系数   
-
-						   // Packed into 4D vector: (Att, Pad)
-		ZCFLOAT3 att;      //衰减系数
-		float pad; // Pad the last float so we can set an array of lights if we wanted.
+		ZCVector position;	//光照位置
+		
+		ZCVector direction;	//光照方向
+		
+		ZCVector att;		//衰减系数
+		float range;			//光照范围
+		float spot;			//光照强度系数   
 		
 	};
-	*/
+	
 	//材质
 	struct Material
 	{
@@ -105,6 +99,109 @@ namespace Lights {
 			//计算高光
 			spec = mat.specular * L.specular * specFactor;
 		}
+	}
+
+	//计算点光源
+	inline void ComputePointLight(
+		const Material& mat,        //材质
+		PointLight L,				//点光源
+		ZCVector pos,				//顶点位置
+		ZCVector normal,				//顶点法线
+		ZCVector toEye,				//顶点到眼睛的向量
+		ZCVector& ambient,			//计算结果:环境光
+		ZCVector& diffuse,			//计算结果:漫反射光
+		ZCVector& spec)				//计算结果:高光
+	{
+		ambient = ZCVector(0.0f, 0.0f, 0.0f, 0.0f);
+		diffuse = ZCVector(0.0f, 0.0f, 0.0f, 0.0f);
+		spec = ZCVector(0.0f, 0.0f, 0.0f, 0.0f);
+
+		//光照方向：顶点到光源
+		ZCVector lightVec = L.position - pos;
+
+		//顶点到光源距离
+		float d = MathUtil::Length(lightVec);
+
+		//超过范围不再计算
+		if (d > L.range)
+			return;
+
+		//归一化光照方向
+		lightVec = lightVec * (1.f / d);
+
+		//计算环境光
+		ambient = mat.ambient * L.ambient;
+
+		//漫反射系数
+		float diffuseFactor = lightVec.Dot(normal);
+
+		if (diffuseFactor > 0.0f)
+		{
+			ZCVector v = MathUtil::Reflect(-lightVec, normal);
+			float specFactor = pow(max(v.Dot(toEye), 0.0f), mat.specular.w);
+			//计算漫反射光
+			diffuse = mat.diffuse * L.diffuse * diffuseFactor;
+			//计算高光
+			spec = mat.specular * L.specular * specFactor;
+		}
+
+		// 计算衰减
+		float att = 1.f / L.att.Dot(ZCVector(1.f, d, d*d));
+		diffuse = diffuse * att;
+		spec = diffuse * att;
+	}
+
+	//计算聚光灯
+	inline void  ComputeSpotLight(
+		const Material& mat,            //材质
+		const SpotLight& L,				//聚光灯
+		ZCVector pos,					//顶点位置
+		ZCVector normal,					//顶点法线
+		ZCVector toEye,					//顶点到眼睛向量
+		ZCVector& ambient,				//计算结果:环境光
+		ZCVector& diffuse,				//计算结果:漫反射光
+		ZCVector& spec)					//计算结果:高光
+	{
+		//初始化结果
+		ambient = ZCVector(0.0f, 0.0f, 0.0f, 0.0f);
+		diffuse = ZCVector(0.0f, 0.0f, 0.0f, 0.0f);
+		spec = ZCVector(0.0f, 0.0f, 0.0f, 0.0f);
+
+		//光照方向：顶点到光源
+		ZCVector lightVec = L.position - pos;
+
+		//顶点到光源距离
+		float d = MathUtil::Length(lightVec);
+
+		//距离大于光照方向不再计算
+		if (d > L.range)
+			return;
+
+		//归一化光照方向
+		lightVec = lightVec * (1.f / d);
+
+		//计算环境光
+		ambient = mat.ambient * L.ambient;
+		//计算漫反射系数
+		float diffuseFactor = lightVec.Dot(normal);
+
+		if (diffuseFactor > 0.0f)
+		{
+			ZCVector v = MathUtil::Reflect(-lightVec, normal);
+			float specFactor = pow(max(v.Dot(toEye), 0.0f), mat.specular.w);
+			//漫反射光
+			diffuse = mat.diffuse * L.diffuse * diffuseFactor;
+			//高光
+			spec = mat.specular * L.specular * specFactor;
+		}
+
+		//聚光衰减系数
+		float spot = pow(max(-lightVec.Dot(L.direction), 0.0f), L.spot);
+		//衰减系数
+		float att = spot / L.att.Dot(ZCVector(1.0f, d, d*d));
+		ambient = ambient * spot;
+		diffuse = diffuse * att;
+		spec = spec * att;
 	}
 }
 

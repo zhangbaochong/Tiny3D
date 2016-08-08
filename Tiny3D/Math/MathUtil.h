@@ -30,6 +30,9 @@ namespace MathUtil
 	//角度转弧度
 	inline float ZCConvertToRadians(float fDegrees) { return fDegrees * (PI / 180.0f); }
 
+	//向量长度
+	float Length(const ZCVector& v);
+
 	//单位矩阵
 	ZCMatrix ZCMatrixIdentity();
 

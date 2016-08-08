@@ -292,9 +292,9 @@ namespace UnitTest
 		[TestMethod]
 		void Math_ColorToUINTTest()
 		{
-			ZCFLOAT3 color(1.f, 1.f, 0.f);
+			ZCVector color(1.f, 1.f, 0.f,1.f);
 			UINT result = ColorToUINT(color);
-			UINT espect = 65535;
+			UINT espect = 16776960;
 			Assert::AreEqual(result, espect);
 			color = { 1.f, 1.f, 1.f };
 			result = ColorToUINT(color);

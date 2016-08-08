@@ -68,7 +68,6 @@ VertexOut BoxShader::VS(const VertexIn& vin)
 
 ZCVector BoxShader::PS(VertexOut& pin)
 {
-
 	//单位化法线
 	pin.normal.Normalize();
 
@@ -94,7 +93,7 @@ ZCVector BoxShader::PS(VertexOut& pin)
 
 
 	//纹理+光照计算公式： 纹理*(环境光+漫反射光)+高光
-	ZCVector litColor = texColor * (A + D) + S;
+	ZCVector litColor = texColor * (ambient + diffuse) + specular;
 
 	//最终颜色透明度使用漫反射光的透明度
 	litColor.w = m_material.diffuse.w * texColor.w;

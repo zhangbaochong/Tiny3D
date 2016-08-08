@@ -107,8 +107,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		//获得前置缓冲区dc
 		HDC hdc = GetDC(hWnd);
 		if (!(s_hBitmap = CreateDIBSection(nullptr, (PBITMAPINFO)&bmphdr, DIB_RGB_COLORS,
-			reinterpret_cast<void**>(&/*g_pBoxDemo->m_pDevice->m_pFramebuffer*/
-				g_pBoxDemo->GetDevice()->GetFrameBuffer()), nullptr, 0)))
+			reinterpret_cast<void**>(&g_pBoxDemo->GetDevice()->GetFrameBuffer()), nullptr, 0)))
 		{
 			MessageBox(nullptr, "create dib section failed!", "error", MB_OK);
 			return 0;

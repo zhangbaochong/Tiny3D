@@ -30,9 +30,6 @@
     <ClCompile Include="Tiny3DDevice.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="MathUtil.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
     <ClCompile Include="BoxDemo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -52,6 +49,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Math\LoadBitmap.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MathUtil.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vertex.cpp">
       <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,9 +77,6 @@
     <ClInclude Include="Tiny3DDeviceContext.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Math</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderBase.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -89,9 +89,6 @@
     <ClInclude Include="Tiny3D.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ZCMath.h">
-      <Filter>Math</Filter>
-    </ClInclude>
     <ClInclude Include="Math\Texture2D.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -99,6 +96,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Math\LoadBitmap.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vertex.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\ZCMath.h">
       <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
