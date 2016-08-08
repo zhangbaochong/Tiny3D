@@ -1,4 +1,4 @@
-#Tiny3D  --a simple c++ soft renderer
+#Tiny3D  --a simple c++ soft raster renderer
 一个简单的c++软光栅渲染器<br>
 [欢迎访问我的博客](http://www.cnblogs.com/zhangbaochong/ "博客园:http://www.cnblogs.com/zhangbaochong/")
 #主要特性
