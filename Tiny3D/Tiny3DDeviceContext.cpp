@@ -294,30 +294,23 @@ void Tiny3DDeviceContext::ScanlineFill(const VertexOut& left, const VertexOut& r
 }
 
 //画平顶三角形 v3为下顶点
-//直线x = (y-y1) * (x2-x1) / (y2-y1) + x1
+//y方向每次增加一个像素 根据y插值顶点
+
 void Tiny3DDeviceContext::DrawTriangleTop(const VertexOut& v1, const VertexOut& v2, const VertexOut& v3)
 {
+	float dy = 0;//每次y增加一个像素
 	for (float y = v1.posH.y; y <= v3.posH.y; y += 1.f)
 	{
 		//四舍五入
 		int yIndex = static_cast<int>(y + 0.5f);
-
 		if (yIndex >= 0 && yIndex < m_pDevice->getClientHeight())
 		{
-			float xLeft = (y - v1.posH.y) * (v3.posH.x - v1.posH.x) / (v3.posH.y - v1.posH.y) + v1.posH.x;
-			float xRight = (y - v2.posH.y) * (v3.posH.x - v2.posH.x) / (v3.posH.y - v2.posH.y) + v2.posH.x;
-
-			float dy = y - v1.posH.y;
 			float t = dy / (v3.posH.y - v1.posH.y);
 
 			//插值生成左右顶点
 			VertexOut new1 = MathUtil::Lerp(v1, v3, t);
-			new1.posH.x = xLeft;
-			new1.posH.y = yIndex;
 			VertexOut new2 = MathUtil::Lerp(v2, v3, t);
-			new2.posH.x = xRight;
-			new2.posH.y = yIndex;
-			
+			dy += 1.f;
 			//扫描线填充
 			if (new1.posH.x < new2.posH.x)
 			{
@@ -335,6 +328,7 @@ void Tiny3DDeviceContext::DrawTriangleTop(const VertexOut& v1, const VertexOut& 
 //画平底三角形 v1为上顶点
 void Tiny3DDeviceContext::DrawTriangleBottom(const VertexOut& v1, const VertexOut& v2, const VertexOut& v3)
 {
+	float dy = 0;//每次y增加一个像素
 	for (float y = v1.posH.y; y <= v2.posH.y; y += 1.f)
 	{
 		//四舍五入
@@ -342,19 +336,12 @@ void Tiny3DDeviceContext::DrawTriangleBottom(const VertexOut& v1, const VertexOu
 
 		if (yIndex >= 0 && yIndex < m_pDevice->getClientHeight())
 		{
-			float xLeft = (y - v1.posH.y) * (v2.posH.x - v1.posH.x) / (v2.posH.y - v1.posH.y) + v1.posH.x;
-			float xRight = (y - v1.posH.y) * (v3.posH.x - v1.posH.x) / (v3.posH.y - v1.posH.y) + v1.posH.x;
-
-			float dy = y - v1.posH.y;
 			float t = dy / (v2.posH.y - v1.posH.y);
 
 			//插值左右顶点
 			VertexOut new1 = MathUtil::Lerp(v1, v2, t);
-			new1.posH.x = xLeft;
-			new1.posH.y = yIndex;
 			VertexOut new2 = MathUtil::Lerp(v1, v3, t);
-			new2.posH.x = xRight;
-			new2.posH.y = yIndex;
+			dy += 1.f;
 
 			//扫描线填充
 			if (new1.posH.x < new2.posH.x)
