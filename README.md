@@ -2,7 +2,7 @@
 一个简单的c++软光栅渲染器<br>
 [欢迎访问我的博客](http://www.cnblogs.com/zhangbaochong/ "博客园:http://www.cnblogs.com/zhangbaochong/")
 #主要特性
-  * 数学库:常用向量float4,flaot3,float2,矩阵matrix,矩阵变换
+  * 数学库:常用向量float4,float3,float2,矩阵matrix,矩阵变换
   * 模型标准:同d3d坐标模型 左手系+world view proj矩阵
   * 实现背面消隐
   * 简单CVV裁剪
